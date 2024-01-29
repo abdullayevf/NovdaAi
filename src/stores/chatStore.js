@@ -16,7 +16,7 @@ export const useChatStore = defineStore("chat", {
         this.prompt = "";
         try {
           const data = await axios.post(
-            "https://novda-ai-server-novda-union.onrender.com/",
+            "https://novda-ai-server-novda-union.onrender.com/chat/beta/",
             { message: prompt },
             {
               headers: {
