@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, onUnmounted } from "vue";
 import { useChatStore } from "./stores/chatStore";
 
 const chatStore = useChatStore();
@@ -79,4 +79,8 @@ const messageStyles = computed(() => {
     };
   };
 });
+
+onUnmounted(() => {
+  sessionStorage.clear()
+}),
 </script>

@@ -44,5 +44,15 @@ export const useChatStore = defineStore("chat", {
         this.loading = false;
       }
     },
+    clearUp(){
+      if (this.messages.length > 0) {
+        try {
+          axios.delete(`http://localhost:3000/chat/delete/${sessionStorage.getItem(userId)}`)
+        } catch (error) {
+          console.log(error);
+        }
+      }
+        
+    }
   },
 });
