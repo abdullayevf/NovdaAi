@@ -4,11 +4,12 @@ import axios from "axios";
 export const useChatStore = defineStore("chat", {
   state: () => ({
     prompt: "",
-    messages: JSON.parse(sessionStorage.getItem("messages")),
-    serverId: sessionStorage.getItem("server-given-id"),
+    messages: JSON.parse(sessionStorage.getItem("messages")) || [],
+    serverId: sessionStorage.getItem("server-given-id") || null,
     loading: false,
     error: false,
   }),
+
   actions: {
     async sendMessage(prompt) {
       if (prompt.length > 0) {
@@ -30,7 +31,11 @@ export const useChatStore = defineStore("chat", {
             this.serverId = data.data.userId;
           }
 
-          this.messages = Object.values(data.data.chatHistory)[0].slice(1);
+          // presenting the right chatHistory
+
+          
+
+          this.messages = Object.values(data.data.chatHistory)[Object.keys(data.data.chatHistory).indexOf(this.serverId)].slice(1);
           sessionStorage.setItem(
             "messages",
             JSON.stringify(Object.values(data.data.chatHistory)[0].slice(1))
@@ -44,15 +49,19 @@ export const useChatStore = defineStore("chat", {
         this.loading = false;
       }
     },
-    clearUp(){
-      if (this.messages.length > 0) {
+    clearUp() {
+      if (this.messages != null) {
         try {
-          axios.delete(`http://localhost:3000/chat/delete/${sessionStorage.getItem(userId)}`)
+          confirm("clean!");
+          axios.delete(
+            `http://localhost:3000/chat/delete/${sessionStorage.getItem(
+              userId
+            )}`
+          );
         } catch (error) {
           console.log(error);
         }
       }
-        
-    }
+    },
   },
 });

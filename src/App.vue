@@ -8,8 +8,8 @@
   <main>
     <!-- header -->
 
-    <header class="header fixed w-full top-0 left-0 bg-slate-100">
-      <div class="container mx-auto p-4 flex justify-center">
+    <header class="fixed top-0 left-0 w-full header bg-slate-100">
+      <div class="container flex justify-center p-4 mx-auto">
         <h1 class="font-medium">Novda <span class="text-blue-700">Ai</span></h1>
       </div>
     </header>
@@ -17,10 +17,10 @@
     <!-- Messages -->
 
     <div class="messages mb-[53.6px] mt-14 w-full overflow-y-scroll">
-      <div class="container messages flex flex-col justify-end mx-auto">
-        <div class="w-full min-h-10 space-y-2 py-4">
+      <div class="container flex flex-col justify-end mx-auto messages">
+        <div class="w-full py-4 space-y-2 min-h-10">
           <div
-            class="w-full bg-white flex"
+            class="flex w-full bg-white"
             v-for="(message, index) in chatStore.messages"
             :key="index"
             :class="{ 'justify-end': message.role === 'user' }"
@@ -41,17 +41,17 @@
 
     <!-- Chat form -->
 
-    <form class="chat-form bg-slate-100 w-full fixed bottom-0 left-0">
-      <div class="mx-auto py-2 container space-x-4 flex px-4 items-center">
+    <form class="fixed bottom-0 left-0 w-full chat-form bg-slate-100">
+      <div class="container flex items-center px-4 py-2 mx-auto space-x-4">
         <input
           type="text"
-          placeholder="Tell me more about ..."
-          class="border h-full text-sm border-slate-300 rounded-md chat-form-input flex-1 p-2"
+          placeholder="e.g. Do cats really have 9 lives?"
+          class="flex-1 h-full p-2 text-sm border rounded-md border-slate-300 chat-form-input"
           aria-label="Type your message"
           v-model="chatStore.prompt"
         />
         <button
-          class="bg-slate-900 text-white sm:px-16 px-8 rounded-md text-sm font-semibold py-2"
+          class="px-8 py-2 text-sm font-semibold text-white rounded-md bg-slate-900 sm:px-16"
           aria-label="Send the message"
           @click.prevent="chatStore.sendMessage(chatStore.prompt)"
           :disabled="chatStore.loading"
@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { computed, onUnmounted } from "vue";
+import { computed, onBeforeUnmount, onUnmounted } from "vue";
 import { useChatStore } from "./stores/chatStore";
 
 const chatStore = useChatStore();
@@ -81,6 +81,6 @@ const messageStyles = computed(() => {
 });
 
 onUnmounted(() => {
-  sessionStorage.clear()
-}),
+  chatStore.clearUp();
+});
 </script>
